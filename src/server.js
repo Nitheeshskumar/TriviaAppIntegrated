@@ -17,7 +17,7 @@ const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('database connected'));
 
-if (process.env.REACT_APP_ENV === 'prod') {
+if (process.env.NODE_ENV === 'production') {
     // Serve any static files  home/nitheesh/Desktop/giter/Integrated/TriviaAppIntegrated/triviafrontend/build
     app.use(express.static(path.join(__dirname, 'triviafrontend/build')));
 
