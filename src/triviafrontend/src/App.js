@@ -3,8 +3,8 @@ import Quiz from './components/Quiz';
 import Result from './components/Result';
 import Login from './components/Login'
 import './App.css';
-import axios from 'axios'
-
+import API from './api/quizQuestions'
+const {listquestions,updateScore,userlogin,checkanswer} = API
 const App = props => {
 
   const [counter, setCounter] = React.useState(0)
@@ -16,12 +16,11 @@ const App = props => {
   const [quizQuestions, setQuizQuestions] = React.useState([]);
   const [isLoggedin, setIsLoggedIn] = React.useState(false);
   const [user, setUser] = React.useState({});
-  const [dashboard,setDashboard]=React.useState([]);
 
 
   const loadinitialData = () => {
     setQuestionId(1); setCounter(0); setQuestion(''); setAnswerOptions([]); setAnswer(''); result.current=0; setQuizQuestions([])
-    axios.get('https://agile-everglades-26580.herokuapp.com/questions')
+    listquestions()
       .then((response) => {
         const shuffledAnswerOptions = response.data.map(question =>
           shuffleArray(question.alternatives)
@@ -59,11 +58,7 @@ const App = props => {
       setTimeout(() => setNextQuestion(), 300);
     } else {
       let body = {...user,attempts:user.attempts+1,score:Math.max(result.current,user.score)}
-      axios.put('https://agile-everglades-26580.herokuapp.com/user',body).then(res=>{
-
-        axios.get('https://agile-everglades-26580.herokuapp.com/dashboard').then(res=>{
-          setDashboard(res.data)
-        }).catch(e=>console.log(e))
+     updateScore(body).then(res=>{
       }).catch(e=>console.log(e))
 
 
@@ -75,13 +70,18 @@ const App = props => {
   }
 
   const handleAnswerSelected = (event) => {
-    if (quizQuestions[counter].alternatives.find(e => e.isCorrect).text === event.currentTarget.value) {
+    checkanswer({choice:event.currentTarget.value,_id:quizQuestions[counter]._id}).then(res=>{
+     if(res.data.answer === true){
       result.current = result.current+1;
-    }
+     }
+    }).catch(e=>console.log(e))
+    // if (quizQuestions[counter].alternatives.find(e => e.isCorrect).text === event.currentTarget.value) {
+    //   result.current = result.current+1;
+    // }
     setAnswer(event.currentTarget.value);
     setTimeout(()=>{
       handleNext()
-    },1000)
+    },700)
   }
 
 
@@ -110,17 +110,18 @@ const App = props => {
   const loginAction = () => {
    const {value:name} = document.getElementById('name');
    const {value:email} = document.getElementById('email');
+   const {value:password} = document.getElementById('password');
    let body = {
-     name:name,email:email
+     name:name,email:email,password:password
    }
-   axios.put('https://agile-everglades-26580.herokuapp.com/user',body).then(res=>{
+  userlogin(body).then(res=>{
     setIsLoggedIn(true);
     setUser(res.data);
    }).catch(e=>console.log(e))
 
   }
   const renderResult = () => {
-    return <Result quizResult={result.current} statistics={dashboard}loadinitialData={loadinitialData} />
+    return <Result quizResult={result.current} loadinitialData={loadinitialData} />
 
   }
   const gameComp = () => questionId > quizQuestions.length ? renderResult() : renderQuiz();

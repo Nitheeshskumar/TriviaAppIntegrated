@@ -1,26 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CSSTransitionGroup } from 'react-transition-group';
-import axios from 'axios'
-import {Table} from 'react-bootstrap'
+import {Table} from 'react-bootstrap';
+import API from '../api/quizQuestions'
+const {listdashboard}=API;
 function Result(props) {
 const [dashboard,setDashboard] = React.useState([])
 React.useEffect(()=>{
-  axios.get('https://agile-everglades-26580.herokuapp.com/dashboard').then(res=>{
+  listdashboard().then(res=>{
     setDashboard(res.data)
   }).catch(e=>console.log(e))
-})
+},[])
 
   return (
-    <CSSTransitionGroup
-      className="container result"
-      component="div"
-      transitionName="fade"
-      transitionEnterTimeout={800}
-      transitionLeaveTimeout={500}
-      transitionAppear
-      transitionAppearTimeout={500}
-    >
+    <>
       {props.quizResult && <>
         <div>
         You Scored <strong>{props.quizResult}</strong>!
@@ -39,7 +31,7 @@ React.useEffect(()=>{
             <td>No.</td><td>Username</td><td>High Score</td><td>Attempts</td>
   </tr>
          </thead>
-{(props.statistics||dashboard).map((e,i)=>{
+{dashboard.map((e,i)=>{
   return <tbody key={i}>
   <tr>
   <td>{i+1}</td><td>{e.name}</td><td>{e.score}</td><td>{e.attempts}</td>
@@ -49,7 +41,7 @@ React.useEffect(()=>{
 })}
  </Table>
       </div>
-    </CSSTransitionGroup>
+    </>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { CSSTransitionGroup } from 'react-transition-group';
 import axios from 'axios'
-class NameForm extends React.Component {
+class QuestionForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = {qstn: '',
@@ -82,7 +82,7 @@ class NameForm extends React.Component {
       );
     }
   }
-  export default NameForm
+  export default QuestionForm
 
 
 

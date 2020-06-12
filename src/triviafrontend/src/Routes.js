@@ -5,8 +5,9 @@ import {
   Route
 } from "react-router-dom";
 import App from "./App";
-import Admin from './Admin'
+import QuestionCreate from './Admin/QuestionCreate'
 import Result from "./components/Result";
+import { CSSTransitionGroup } from 'react-transition-group';
 
 export default function BasicExample() {
     return (
@@ -15,6 +16,16 @@ export default function BasicExample() {
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/800px-SARS-CoV-2_without_background.png" className="App-logo" alt="logo" />
           <h2>Covid Quiz  </h2>
       </div>
+      <CSSTransitionGroup
+      className="container result"
+      component="div"
+      transitionName="fade"
+      transitionEnterTimeout={800}
+      transitionLeaveTimeout={500}
+      transitionAppear
+      transitionAppearTimeout={500}
+    >
+
       <Router>
            <div>
           <Switch>
@@ -24,12 +35,15 @@ export default function BasicExample() {
             <Route path="/dashboard">
             <Result />
             </Route>
-            <Route path="/admin">
-              <Admin/>
+            <Route path="/admin/question">
+              <QuestionCreate/>
             </Route>
           </Switch>
         </div>
       </Router>
+      </CSSTransitionGroup>
+
+
       </div>
     );
   }

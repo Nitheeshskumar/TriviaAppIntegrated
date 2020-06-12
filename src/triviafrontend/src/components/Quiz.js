@@ -1,18 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CSSTransitionGroup } from 'react-transition-group';
 
 function Quiz(props) {
   return (
-    <CSSTransitionGroup
-      className="container"
-      component="div"
-      transitionName="fade"
-      transitionEnterTimeout={800}
-      transitionLeaveTimeout={500}
-      transitionAppear
-      transitionAppearTimeout={500}
-    >
+    <>
       <div key={props.questionId}>
         <div className="questionCount">
           Question <span>{props.questionId}</span> of <span>{props.questionTotal}</span>
@@ -38,7 +29,7 @@ function Quiz(props) {
       )}
         </ul>
       </div>
-    </CSSTransitionGroup>
+    </>
   );
 }
 
