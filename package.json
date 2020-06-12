@@ -8,7 +8,7 @@
     "start": "node src/server.js",
     "reacteri": "cd triviafrontend && npm i",
     "reacter": "cd triviafrontend && npm start",
-    "heroku-postbuild": "cross-env-shell REACT_APP_ENV=prod \"cd triviafrontend && npm install && npm install --only=dev --no-shrinkwrap && npm run build\""
+    "heroku-postbuild": "cross-env-shell REACT_APP_ENV=prod \"cd src/triviafrontend && npm install && npm install --only=dev --no-shrinkwrap && npm run build\""
   },
   "author": "",
   "license": "ISC",

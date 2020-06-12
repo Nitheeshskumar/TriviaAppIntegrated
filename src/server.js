@@ -19,11 +19,11 @@ db.once('open', () => console.log('database connected'));
 
 if (process.env.REACT_APP_ENV === 'prod') {
     // Serve any static files  home/nitheesh/Desktop/giter/Integrated/TriviaAppIntegrated/triviafrontend/build
-    app.use(express.static(path.join(__dirname, '../triviafrontend/build')));
+    app.use(express.static(path.join(__dirname, 'triviafrontend/build')));
 
     // Handle React routing, return all requests to React app
     app.get('*', function(req, res) {
-      res.sendFile(path.join(__dirname, '../triviafrontend/build', 'index.html'));
+      res.sendFile(path.join(__dirname, 'triviafrontend/build', 'index.html'));
     });
   }
 app.listen(process.env.PORT, () => {
