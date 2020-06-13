@@ -6,7 +6,7 @@ module.exports = router
 
 
 // create user
-router.put('/api/checknoder/admin/user/create', async (req, res) => {
+router.post('/api/checknoder/admin/user/create', async (req, res) => {
     try {
 
         const { name,email,password } = req.body

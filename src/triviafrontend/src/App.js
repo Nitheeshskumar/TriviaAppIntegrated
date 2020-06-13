@@ -3,8 +3,9 @@ import Quiz from './components/Quiz';
 import Result from './components/Result';
 import Login from './components/Login'
 import './App.css';
-import API from './api/quizQuestions'
-const {listquestions,updateScore,userlogin,checkanswer} = API
+import API from './api/quizQuestions';
+import {shuffleArray} from './components/Shared/Utils'
+const {listquestions,updateScore,checkanswer} = API
 const App = props => {
 
   const [counter, setCounter] = React.useState(0)
@@ -39,20 +40,6 @@ const App = props => {
     loadinitialData()
   }, [])
 
-  const shuffleArray = (array) => {
-    var currentIndex = array.length,
-      temporaryValue,
-      randomIndex;
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-  }
   const handleNext = () => {
     if (questionId < quizQuestions.length) {
       setTimeout(() => setNextQuestion(), 300);
@@ -107,19 +94,11 @@ const App = props => {
       />
     );
   }
-  const loginAction = () => {
-   const {value:name} = document.getElementById('name');
-   const {value:email} = document.getElementById('email');
-   const {value:password} = document.getElementById('password');
-   let body = {
-     name:name,email:email,password:password
-   }
-  userlogin(body).then(res=>{
-    setIsLoggedIn(true);
-    setUser(res.data);
-   }).catch(e=>console.log(e))
-
-  }
+  const loginAction = (data) => {
+    console.log(data)
+      setIsLoggedIn(true);
+      setUser(data);
+    }
   const renderResult = () => {
     return <Result quizResult={result.current} loadinitialData={loadinitialData} />
 

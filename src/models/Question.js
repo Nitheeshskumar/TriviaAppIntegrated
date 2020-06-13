@@ -2,21 +2,13 @@ const mongoose = require('mongoose')
 
 const QuestionSchema = new mongoose.Schema({
     description: String,
+    pack:{type:String,default:'Day1'},
+    tips:{type:String},
     type:{
         type: String,
         default: 'question' },
     alternatives: [
-        {
-            text: {
-                type: String,
-                required: true
-            },
-            isCorrect: {
-                type: Boolean,
-                required: true,
-                default: false
-            }
-        }
+        {type:String}
     ],
     correct:String
 })

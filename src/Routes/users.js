@@ -38,7 +38,7 @@ router.post('/api/checknoder/user/login', async (req, res) => {
             return res.status(201).json({ user: "none" })
         }
         else if (user.password === password) {
-            if (name !== user.name) {
+            if (name&& (name !== user.name)) {
                 user.name = name;
                 await user.save()
             }

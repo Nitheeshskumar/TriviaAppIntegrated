@@ -10,8 +10,8 @@ function Quiz(props) {
         </div>
         <h2 className="question">{props.question}</h2>
         <ul className="answerOptions">
-          {props.answerOptions.map(key=>
-      <li className="answerOption" key= {key._id}>
+          {props.answerOptions.map((key,_id)=>
+      <li className="answerOption" key= {_id}>
       <input
         type="radio"
         className="radioCustomButton"

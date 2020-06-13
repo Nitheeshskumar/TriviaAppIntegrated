@@ -2,12 +2,13 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,Redirect
 } from "react-router-dom";
 import App from "./App";
 import QuestionCreate from './Admin/QuestionCreate'
 import Result from "./components/Result";
 import { CSSTransitionGroup } from 'react-transition-group';
+import Signup from './Admin/CreateUser'
 
 export default function BasicExample() {
     return (
@@ -38,6 +39,10 @@ export default function BasicExample() {
             <Route path="/admin/question">
               <QuestionCreate/>
             </Route>
+            <Route path="/admin/signup">
+              <Signup/>
+            </Route>
+            <Redirect from="*" to="/" />
           </Switch>
         </div>
       </Router>

@@ -4,7 +4,7 @@ const Question = require('../models/Question')
 module.exports = router
 
 // create one quiz question
-router.post('/api/checknoder/questions', async (req, res) => {
+router.post('/api/checknoder/questions/create', async (req, res) => {
     try {
         const { description ,alternatives,correct} = req.body
 
