@@ -24,7 +24,7 @@ const variant = React.useRef('');
         variant.current = 'danger';
         setShow(true)
 
-      }else if(res.data.user === 'true'){
+      }else if(res.data.email){
         props.login(res.data)
       }
 

@@ -31,7 +31,7 @@ router.post('/api/checknoder/user/login', async (req, res) => {
 
         const { name, email, password } = req.body
 
-        let user = await User.findOne({ email })
+        let user = await User.findOne({ email },{password:0,type:0,_id:0})
         console.log("aaha ")
         if (!user) {
             console.log("no exist")
@@ -42,7 +42,7 @@ router.post('/api/checknoder/user/login', async (req, res) => {
                 user.name = name;
                 await user.save()
             }
-            return res.status(200).json({ user: "true" })
+            return res.status(200).json(user)
         } else {
             return res.status(200).json({ user: "false" })
         }
