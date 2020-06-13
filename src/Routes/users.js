@@ -42,10 +42,13 @@ router.post('/api/checknoder/user/login', async (req, res) => {
                 user.name = name;
                 await user.save()
             }
-            let usertemp = {...user};
-            delete usertemp._id;
-            delete usertemp.password;
-            return res.status(200).json(usertemp)
+            console.log(user)
+            let usertemp ={...user};
+            let usertemp2=usertemp._doc
+           delete usertemp2._id;
+           delete usertemp2.password;
+           delete usertemp2.type;
+            return res.status(200).json(usertemp2)
         } else {
             return res.status(200).json({ user: "false" })
         }
