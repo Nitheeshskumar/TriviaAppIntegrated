@@ -16,14 +16,14 @@ function Quiz(props) {
         type="radio"
         className="radioCustomButton"
         name="radioGroup"
-        checked={key.text === props.answer}
-        id={key.text}
-        value={key.text}
+        checked={key === props.answer}
+        id={key}
+        value={key}
         disabled={props.answer}
         onChange={props.onAnswerSelected}
       />
-      <label className="radioCustomLabel" htmlFor={key.text}>
-        {key.text}
+      <label className="radioCustomLabel" htmlFor={key}>
+        {key}
       </label>
     </li>
       )}
