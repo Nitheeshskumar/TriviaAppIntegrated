@@ -43,10 +43,21 @@ router.post('/api/checknoder/user/login', async (req, res) => {
             return res.status(201).json({ user: "none" })
         }
         else if (user.password === password) {
+            if(user.email === 'trial@petta.in'){
+                if (name) {
+                    user.name = name+" Trial User";
+                    await user.save()
+                }else{
+                    if(user.name !=="Trial User"){
+                        user.name ="Trial User";
+                        await user.save()
+                    }
+                }
+            }else{
             if (name&& (name !== user.name)) {
                 user.name = name;
                 await user.save()
-            }
+            }}
             console.log(user)
             let usertemp ={...user};
             let usertemp2=usertemp._doc
