@@ -6,7 +6,7 @@ const AlertDismissible=(props)=> {
   console.log(props.show)
     return (
       <>
-        <Alert show={props.show} variant={props.variant}>
+        <Alert show={props.show} variant={props.variant} >
           <Alert.Heading>{props.variant === 'danger'?'Oops yaar !!':'Are Waaah !!'}</Alert.Heading>
           <p>
            {props.content}

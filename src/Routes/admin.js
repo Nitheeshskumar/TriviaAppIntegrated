@@ -9,13 +9,13 @@ module.exports = router
 router.post('/api/checknoder/admin/user/create', async (req, res) => {
     try {
 
-        const { name,email,password } = req.body
+        const { name,email,password,responses } = req.body
 
         let user = await User.findOne({email})
 
         if(!user){
             user = await User.create({
-                name,email,password
+                name,email,password,responses
             })
             return res.status(201).json(user)
         }else{

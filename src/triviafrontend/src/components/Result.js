@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Table} from 'react-bootstrap';
+import {Table,Button} from 'react-bootstrap';
 import API from '../api/quizQuestions'
 const {listdashboard}=API;
 function Result(props) {
@@ -13,12 +13,12 @@ React.useEffect(()=>{
 
   return (
     <>
-      {props.quizResult && <>
+      {(props.quizResult ||props.quizResult === 0)&& <>
         <div>
-        You Scored <strong>{props.quizResult}</strong>!
+        You Scored <strong>{props.quizResult}</strong>! {' '}
       </div>
+      <Button onClick = {()=>props.loadinitialData()} variant="outline-primary">Restart</Button>
 
-      <button onClick = {props.loadinitialData}>Restart</button>
       </>}
 
       <div>

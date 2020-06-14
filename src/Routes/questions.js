@@ -32,18 +32,14 @@ router.get('/api/checknoder/questions', async (req, res) => {
 //check answer
 router.post('/api/checknoder/questions/checkanswer',async(req,res)=>{
     try {
-        const { choice, _id } = req.body
+        const {  _id } = req.body
 
-        let question = await Question.findOne({_id})
+        let question = await Question.findOne({_id},{correct:1,tips:1})
 
         if(!question){
             return res.status(500).json({"error":"question doesn't exist"})
         }else{
-           if(question.correct === choice){
-            return res.status(200).json({answer:true})
-           }
-           return res.status(200).json({answer:false})
-
+           return res.status(200).json(question)
         }
     } catch (error) {
         return res.status(500).json({"error":error})

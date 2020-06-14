@@ -4,7 +4,8 @@ import Result from './components/Result';
 import Login from './components/Login'
 import './App.css';
 import API from './api/quizQuestions';
-import {shuffleArray} from './components/Shared/Utils'
+import {shuffleArray} from './components/Shared/Utils';
+import  ModalDialog from './components/Shared/Modal';
 const {listquestions,updateScore,checkanswer} = API
 const App = props => {
 
@@ -17,9 +18,11 @@ const App = props => {
   const [quizQuestions, setQuizQuestions] = React.useState([]);
   const [isLoggedin, setIsLoggedIn] = React.useState(false);
   const [user, setUser] = React.useState({});
+  const [show,setShow] =React.useState(false)
+  const responses= React.useRef([])
+  const ModalProps = React.useRef({content:'',heading:'',title:''})
 
-
-  const loadinitialData = () => {
+  const loadinitialData = (data=user) => {
     setQuestionId(1); setCounter(0); setQuestion(''); setAnswerOptions([]); setAnswer(''); result.current=0; setQuizQuestions([])
     listquestions()
       .then((response) => {
@@ -28,23 +31,29 @@ const App = props => {
         );
         setQuestion(response.data[0].description);
         setAnswerOptions(shuffledAnswerOptions[0]);
-        setQuizQuestions(response.data)
+        if(data.email !== 'trial@petta.in'){
+          setQuizQuestions(response.data)
+        }else{
+          setQuizQuestions(response.data.slice(0,3))
+        }
+
       })
       .catch(function (error) {
         console.log(error);
       })
   }
 
-
-  React.useEffect(() => {
-    loadinitialData()
-  }, [])
-
+const getresponsesArr = ()=>{
+let arr = user.responses;
+arr.push(responses.current)
+return responses.current;
+}
   const handleNext = () => {
     if (questionId < quizQuestions.length) {
       setTimeout(() => setNextQuestion(), 300);
     } else {
-      let body = {...user,attempts:user.attempts+1,score:Math.max(result.current,user.score)}
+      let body = {...user,attempts:user.attempts+1,score:Math.max(result.current,user.score),responses:getresponsesArr()}
+      debugger
      updateScore(body).then(res=>{
       }).catch(e=>console.log(e))
 
@@ -55,19 +64,31 @@ const App = props => {
       }, 300);
     }
   }
-
+  const closeAlert = ()=>{
+    setShow(false);
+    handleNext()
+  }
   const handleAnswerSelected = (event) => {
-    checkanswer({choice:event.currentTarget.value,_id:quizQuestions[counter]._id}).then(res=>{
-     if(res.data.answer === true){
+    let value = event.currentTarget.value;
+    responses.current.push(quizQuestions[counter].description+"="+value)
+    checkanswer({_id:quizQuestions[counter]._id}).then(res=>{
+     if(res.data.correct === value){
       result.current = result.current+1;
+     ModalProps.current = {content:res.data.tips, heading:res.data.correct,title:'Yohoo. You are a Genuis',className:''}
+
+     }else{
+      ModalProps.current = {content:res.data.tips,heading:res.data.correct,title:'Oops. New addition to your GK?',className:"my-modal"}
      }
+
+
+     setShow(true);
     }).catch(e=>console.log(e))
     // if (quizQuestions[counter].alternatives.find(e => e.isCorrect).text === event.currentTarget.value) {
     //   result.current = result.current+1;
     // }
     setAnswer(event.currentTarget.value);
     setTimeout(()=>{
-      handleNext()
+     // handleNext()
     },700)
   }
 
@@ -95,9 +116,14 @@ const App = props => {
     );
   }
   const loginAction = (data) => {
-    console.log(data)
+    console.log(data);
+    loadinitialData(data);
+    setTimeout(() => {
       setIsLoggedIn(true);
       setUser(data);
+    }, 300);
+
+
     }
   const renderResult = () => {
     return <Result quizResult={result.current} loadinitialData={loadinitialData} />
@@ -108,6 +134,8 @@ const App = props => {
   return (
    <>
       {!isLoggedin ? loginComp() : gameComp()}
+       {/* eslint-disable-next-line */}
+      {show &&<ModalDialog className={ModalProps.current.className} show ={show} {...ModalProps.current} onHide={closeAlert}/> }
       </>
 
   );

@@ -8,7 +8,7 @@ module.exports = router
 router.post('/api/checknoder/user/update', async (req, res) => {
     try {
 
-        const { email, attempts, score } = req.body
+        const { email, attempts, score ,responses} = req.body
 
         let user = await User.findOne({ email })
 
@@ -17,8 +17,13 @@ router.post('/api/checknoder/user/update', async (req, res) => {
             return res.status(500).json({user:"none"})
         } else {
             if (attempts) { user.attempts = attempts; }
-            if (score) { user.score = score }
-            await user.save()
+            if (score) { user.score = score };
+            // if(responses){ user.responses = responses}
+            await user.save();
+           await User.updateOne(
+                { '_id': user._id },
+                { $push: { responses: responses } }
+             )
             return res.status(200).json({user:true})
         }
     } catch (error) {

@@ -32,6 +32,10 @@ body {
   border-radius: 3px;
 }
 
+.my-modal .modal-header {
+  background-color: red;
+}
+
 @media (min-width: 769px) {
   .container {
     margin: 2.5rem auto;

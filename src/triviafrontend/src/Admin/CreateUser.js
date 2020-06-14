@@ -17,7 +17,7 @@ function Signup(props) {
     event.preventDefault();
     event.stopPropagation();
     if(continues){
-        createUser(newData).then(res=>console.log(res)).catch(e=>console.log(e));
+        createUser({...newData,responses:['0']}).then(res=>console.log(res)).catch(e=>console.log(e));
     }
     setValidated(true);
 
